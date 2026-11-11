@@ -1,3 +1,4 @@
+/* oxlint-disable react-hooks-js/refs -- cố ý ghi ref lúc render để đếm (xem comment bên dưới) */
 import { useRef } from 'react'
 
 // Đếm số lần component render. Ghi ref trong lúc render là "impure", nhưng đủ cho demo
