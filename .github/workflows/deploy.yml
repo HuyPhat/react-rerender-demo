@@ -1,6 +1,9 @@
 name: Deploy to GitHub Pages
 on:
-  push:
+  # Chỉ chạy sau khi workflow "CI" (ci.yml) kết thúc trên main; điều kiện thành công kiểm ở `if` bên dưới.
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
     branches: [main]
   workflow_dispatch:
 
@@ -15,12 +18,17 @@ concurrency:
 
 jobs:
   deploy:
+    # workflow_run kích hoạt cả khi CI thất bại → chỉ deploy khi CI xanh (hoặc khi bấm chạy tay).
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          # workflow_run chạy trên HEAD của main → phải checkout đúng commit mà CI vừa kiểm.
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
       - uses: actions/setup-node@v4
         with:
           node-version: 24
