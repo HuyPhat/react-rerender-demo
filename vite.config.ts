@@ -16,7 +16,9 @@ const logger = {
 }
 
 // Dev: đổi jsxImportSource sang why-did-you-render để nó "nghe" được mọi lần render.
-export default defineConfig(({ mode }) => ({
+export default defineConfig(({ mode, command }) => ({
+  // GitHub Pages phục vụ tại /react-rerender-demo/ → asset phải có prefix này khi build (dev vẫn ở "/").
+  base: command === 'build' ? '/react-rerender-demo/' : '/',
   plugins: [
     react(mode === 'development' ? { jsxImportSource: '@welldone-software/why-did-you-render' } : {}),
     // React Compiler chỉ biên dịch component có directive 'use memo' → Broken/Fixed giữ nguyên để so sánh.
