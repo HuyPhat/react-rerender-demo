@@ -10,7 +10,6 @@ export function Broken() {
   const [text, setText] = useState('')
   const [count, setCount] = useState(0)
   const [selected, setSelected] = useState(0)
-  const id = Math.random()
 
   return (
     // ❌ #3: object literal mới mỗi lần render → mọi consumer re-render
