@@ -1,0 +1,19 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: npm install -g pnpm@12
+      - run: pnpm install --frozen-lockfile
+      # Skipped.tsx cố ý vi phạm quy tắc React để làm demo → loại khỏi lint, nếu không CI luôn đỏ.
+      - run: pnpm lint --ignore-pattern src/Skipped.tsx
+      - run: pnpm build
